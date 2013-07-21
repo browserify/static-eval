@@ -1,8 +1,10 @@
 var parse = require('esprima').parse;
 var deparse = require('escodegen').generate;
 
-module.exports = function (ast) {
+module.exports = function (ast, vars) {
+    if (!vars) vars = {};
     var FAIL = {};
+    
     var result = (function walk (node) {
         if (node.type === 'Literal') {
             return node.value;
@@ -52,6 +54,12 @@ module.exports = function (ast) {
             if (op === '||') return l || r;
             
             return FAIL;
+        }
+        else if (node.type === 'Identifier') {
+            if ({}.hasOwnProperty.call(vars, node.name)) {
+                return vars[node.name];
+            }
+            else return FAIL;
         }
         else return FAIL;
     })(ast);
