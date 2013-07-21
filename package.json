@@ -1,0 +1,35 @@
+{
+  "name": "static-eval",
+  "version": "0.0.0",
+  "description": "evaluate statically-analyzable expressions",
+  "main": "index.js",
+  "devDependencies": {
+    "tape": "~1.0.4",
+    "esprima": "~1.0.3"
+  },
+  "scripts": {
+    "test": "tape test/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/substack/static-eval.git"
+  },
+  "homepage": "https://github.com/substack/static-eval",
+  "keywords": [
+    "static",
+    "eval",
+    "expression",
+    "esprima",
+    "ast",
+    "abstract",
+    "syntax",
+    "tree",
+    "analysis"
+  ],
+  "author": {
+    "name": "James Halliday",
+    "email": "mail@substack.net",
+    "url": "http://substack.net"
+  },
+  "license": "MIT"
+}
