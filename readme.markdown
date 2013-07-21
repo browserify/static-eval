@@ -2,6 +2,10 @@
 
 evaluate statically-analyzable expressions
 
+[![testling badge](https://ci.testling.com/substack/static-eval.png)](https://ci.testling.com/substack/static-eval)
+
+[![build status](https://secure.travis-ci.org/substack/static-eval.png)](http://travis-ci.org/substack/static-eval)
+
 # example
 
 ``` js

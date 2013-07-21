@@ -10,6 +10,13 @@
   "scripts": {
     "test": "tape test/*.js"
   },
+  "testling": {
+    "files": "test/*.js",
+    "browsers": [
+      "ie/8..latest", "ff/latest", "chrome/latest",
+      "opera/latest", "safari/latest"
+    ]
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/substack/static-eval.git"
