@@ -1,6 +1,3 @@
-var parse = require('esprima').parse;
-var deparse = require('escodegen').generate;
-
 module.exports = function (ast, vars) {
     if (!vars) vars = {};
     var FAIL = {};
