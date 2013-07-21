@@ -73,6 +73,16 @@ module.exports = function (ast, vars) {
             }
             else return FAIL;
         }
+        else if (node.type === 'MemberExpression') {
+            var obj = walk(node.object);
+            if (obj === FAIL) return FAIL;
+            if (node.property.type === 'Identifier') {
+                return obj[node.property.name];
+            }
+            var prop = walk(node.property);
+            if (prop === FAIL) return FAIL;
+            return obj[prop];
+        }
         else return FAIL;
     })(ast);
     
