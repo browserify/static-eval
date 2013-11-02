@@ -35,6 +35,10 @@ module.exports = function (ast, vars) {
             if (r === FAIL) return FAIL;
             
             var op = node.operator;
+            if (op === '==') return l == r;
+            if (op === '===') return l === r;
+            if (op === '!=') return l != r;
+            if (op === '!==') return l !== r;
             if (op === '+') return l + r;
             if (op === '-') return l - r;
             if (op === '*') return l * r;
