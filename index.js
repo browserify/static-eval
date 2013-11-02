@@ -84,6 +84,11 @@ module.exports = function (ast, vars) {
             if (prop === FAIL) return FAIL;
             return obj[prop];
         }
+        else if (node.type === 'ConditionalExpression') {
+            var val = walk(node.test)
+            if (val === FAIL) return FAIL;
+            return val ? walk(node.consequent) : walk(node.alternate)
+        }
         else return FAIL;
     })(ast);
     
