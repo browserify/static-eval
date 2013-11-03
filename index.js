@@ -32,7 +32,7 @@ module.exports = function (ast, vars) {
                     : walk(prop.value)
                 ;
                 if (value === FAIL) return FAIL;
-                obj[prop.key.value] = value;
+                obj[prop.key.value || prop.key.name] = value;
             }
             return obj;
         }
