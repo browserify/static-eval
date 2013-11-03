@@ -6,6 +6,14 @@ module.exports = function (ast, vars) {
         if (node.type === 'Literal') {
             return node.value;
         }
+        else if (node.type === 'UnaryExpression'){
+            var val = walk(node.argument)
+            if (node.operator === '+') return +val
+            if (node.operator === '-') return -val
+            if (node.operator === '~') return ~val
+            if (node.operator === '!') return !val
+            return FAIL
+        }
         else if (node.type === 'ArrayExpression') {
             var xs = [];
             for (var i = 0, l = node.elements.length; i < l; i++) {
