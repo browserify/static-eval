@@ -27,3 +27,11 @@ test('unresolved', function (t) {
     });
     t.equal(res, undefined);
 });
+
+test('boolean', function (t) {
+    t.plan(1);
+    
+    var src = '[ 1===2+3-16/4, [2]==2, [2]!==2, [2]!==[2] ]';
+    var ast = parse(src).body[0].expression;
+    t.deepEqual(evaluate(ast), [ true, true, true, true ]);
+});
