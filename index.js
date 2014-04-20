@@ -1,3 +1,5 @@
+var unparse = require('escodegen').generate;
+
 module.exports = function (ast, vars) {
     if (!vars) vars = {};
     var FAIL = {};
@@ -96,6 +98,9 @@ module.exports = function (ast, vars) {
             var val = walk(node.test)
             if (val === FAIL) return FAIL;
             return val ? walk(node.consequent) : walk(node.alternate)
+        }
+        else if (node.type === 'FunctionExpression') {
+            return Function('return ' + unparse(node))();
         }
         else return FAIL;
     })(ast);
