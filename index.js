@@ -71,16 +71,16 @@ module.exports = function (ast, vars) {
             else return FAIL;
         }
         else if (node.type === 'CallExpression') {
-            if ({}.hasOwnProperty.call(vars, node.callee.name)) {
-                var args = [];
-                for (var i = 0, l = node.arguments.length; i < l; i++) {
-                    var x = walk(node.arguments[i]);
-                    if (x === FAIL) return FAIL;
-                    args.push(x);
-                }
-                return vars[node.callee.name].apply(null, args);
+            var callee = walk(node.callee);
+            if (callee === FAIL) return FAIL;
+            
+            var args = [];
+            for (var i = 0, l = node.arguments.length; i < l; i++) {
+                var x = walk(node.arguments[i]);
+                if (x === FAIL) return FAIL;
+                args.push(x);
             }
-            else return FAIL;
+            return callee.apply(null, args);
         }
         else if (node.type === 'MemberExpression') {
             var obj = walk(node.object);
