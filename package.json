@@ -3,6 +3,9 @@
   "version": "0.2.0",
   "description": "evaluate statically-analyzable expressions",
   "main": "index.js",
+  "dependencies": {
+    "escodegen": "~0.0.24"
+  },
   "devDependencies": {
     "tape": "~1.0.4",
     "esprima": "~1.0.3"
