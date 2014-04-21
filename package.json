@@ -1,6 +1,6 @@
 {
   "name": "static-eval",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "evaluate statically-analyzable expressions",
   "main": "index.js",
   "dependencies": {
