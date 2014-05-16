@@ -76,13 +76,16 @@ module.exports = function (ast, vars) {
             var callee = walk(node.callee);
             if (callee === FAIL) return FAIL;
             
+            var ctx = node.callee.object ? walk(node.callee.object) : FAIL;
+            if (ctx === FAIL) ctx = null;
+
             var args = [];
             for (var i = 0, l = node.arguments.length; i < l; i++) {
                 var x = walk(node.arguments[i]);
                 if (x === FAIL) return FAIL;
                 args.push(x);
             }
-            return callee.apply(null, args);
+            return callee.apply(ctx, args);
         }
         else if (node.type === 'MemberExpression') {
             var obj = walk(node.object);
