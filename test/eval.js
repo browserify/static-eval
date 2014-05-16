@@ -35,3 +35,11 @@ test('boolean', function (t) {
     var ast = parse(src).body[0].expression;
     t.deepEqual(evaluate(ast), [ true, true, true, true ]);
 });
+
+test('array methods', function(t) {
+    t.plan(1);
+
+    var src = '[1, 2, 3].map(function(n) { return n * 2 })';
+    var ast = parse(src).body[0].expression;
+    t.deepEqual(evaluate(ast), [2, 4, 6]);
+})
