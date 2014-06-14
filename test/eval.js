@@ -5,10 +5,10 @@ var parse = require('esprima').parse;
 test('resolved', function (t) {
     t.plan(1);
     
-    var src = '[1,2,3+4*10+n,foo(3+5),obj[""+"x"].y]';
+    var src = '[1,2,3+4*10+(n||6),foo(3+5),obj[""+"x"].y]';
     var ast = parse(src).body[0].expression;
     var res = evaluate(ast, {
-        n: 6,
+        n: false,
         foo: function (x) { return x * 100 },
         obj: { x: { y: 555 } }
     });
