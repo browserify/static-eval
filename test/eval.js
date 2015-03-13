@@ -50,4 +50,4 @@ test('array methods with vars', function(t) {
     var src = '[1, 2, 3].map(function(n) { return n * x })';
     var ast = parse(src).body[0].expression;
     t.deepEqual(evaluate(ast, {x: 2}), [2, 4, 6]);
-})
+});
