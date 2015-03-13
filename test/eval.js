@@ -42,4 +42,12 @@ test('array methods', function(t) {
     var src = '[1, 2, 3].map(function(n) { return n * 2 })';
     var ast = parse(src).body[0].expression;
     t.deepEqual(evaluate(ast), [2, 4, 6]);
+});
+
+test('array methods with vars', function(t) {
+    t.plan(1);
+
+    var src = '[1, 2, 3].map(function(n) { return n * x })';
+    var ast = parse(src).body[0].expression;
+    t.deepEqual(evaluate(ast, {x: 2}), [2, 4, 6]);
 })

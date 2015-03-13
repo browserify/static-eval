@@ -104,7 +104,11 @@ module.exports = function (ast, vars) {
             return val ? walk(node.consequent) : walk(node.alternate)
         }
         else if (node.type === 'FunctionExpression') {
-            return Function('return ' + unparse(node))();
+            var keys = Object.keys(vars),
+                vals = keys.map(function(key) {
+                    return vars[key];
+                });
+            return Function(keys.join(', '), 'return ' + unparse(node)).apply(null, vals);
         }
         else return FAIL;
     })(ast);
