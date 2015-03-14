@@ -73,6 +73,12 @@ module.exports = function (ast, vars) {
             }
             else return FAIL;
         }
+        else if (node.type === 'ThisExpression') {
+            if ({}.hasOwnProperty.call(vars, 'this')) {
+                return vars['this'];
+            }
+            else return FAIL;
+        }
         else if (node.type === 'CallExpression') {
             var callee = walk(node.callee);
             if (callee === FAIL) return FAIL;
