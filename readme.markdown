@@ -61,11 +61,11 @@ console.log(evaluate(ast, {
 var evaluate = require('static-eval');
 ```
 
-## evaluate(ast, vars={})
+## evaluate(ast, vars={}, thisArg={})
 
 Evaluate the [esprima](https://npmjs.org/package/esprima)-parsed abstract syntax
-tree object `ast` with an optional collection of variables `vars` to use in the
-static expression resolution.
+tree object `ast` with an optional collection of variables `vars` and an optional
+context `thisArg` to use in the static expression resolution.
 
 If the expression contained in `ast` can't be statically resolved, `evaluate()`
 returns undefined.
