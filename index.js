@@ -1,7 +1,8 @@
 var unparse = require('escodegen').generate;
 
-module.exports = function (ast, vars) {
+module.exports = function (ast, vars, thisArg) {
     if (!vars) vars = {};
+    if (!thisArg) thisArg = {};
     var FAIL = {};
     
     var result = (function walk (node) {
@@ -109,6 +110,9 @@ module.exports = function (ast, vars) {
                 return vars[key];
             });
             return Function(keys.join(', '), 'return ' + unparse(node)).apply(null, vals);
+        }
+        else if (node.type === 'ThisExpression') {
+            return thisArg;
         }
         else return FAIL;
     })(ast);

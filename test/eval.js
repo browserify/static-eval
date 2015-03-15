@@ -51,3 +51,25 @@ test('array methods with vars', function(t) {
     var ast = parse(src).body[0].expression;
     t.deepEqual(evaluate(ast, {x: 2}), [2, 4, 6]);
 });
+
+test('resolved vars and resolved thisArg', function(t) {
+    t.plan(1);
+
+    var src = 'this.foo.bar === var1 && this.foo2() == var2';
+    var ast = parse(src).body[0].expression;
+    var value1 = 'value1';
+    var value2 = 1;
+    var vars = {
+        var1: value1,
+        var2: value2
+    }
+    var thisArg = {
+        foo: {
+            bar: value1
+        },
+        foo2: function() {
+            return value2;
+        }
+    }
+    t.deepEqual(evaluate(ast, vars, thisArg), true);
+});
