@@ -4,11 +4,11 @@
   "description": "evaluate statically-analyzable expressions",
   "main": "index.js",
   "dependencies": {
-    "escodegen": "~0.0.24"
+    "escodegen": "^1.8.1"
   },
   "devDependencies": {
-    "tape": "~1.0.4",
-    "esprima": "~1.0.3"
+    "esprima": "^2.7.3",
+    "tape": "^4.6.0"
   },
   "scripts": {
     "test": "tape test/*.js"
@@ -16,8 +16,11 @@
   "testling": {
     "files": "test/*.js",
     "browsers": [
-      "ie/8..latest", "ff/latest", "chrome/latest",
-      "opera/latest", "safari/latest"
+      "ie/8..latest",
+      "ff/latest",
+      "chrome/latest",
+      "opera/latest",
+      "safari/latest"
     ]
   },
   "repository": {

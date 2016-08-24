@@ -110,6 +110,25 @@ module.exports = function (ast, vars) {
             });
             return Function(keys.join(', '), 'return ' + unparse(node)).apply(null, vals);
         }
+        else if (node.type === 'TemplateLiteral') {
+            var str = '';
+            for (var i = 0; i < node.expressions.length; i++) {
+                str += walk(node.quasis[i]);
+                str += walk(node.expressions[i]);
+            }
+            str += walk(node.quasis[i]);
+            return str;
+        }
+        else if (node.type === 'TaggedTemplateExpression') {
+            var tag = walk(node.tag);
+            var quasi = node.quasi;
+            var strings = quasi.quasis.map(walk);
+            var values = quasi.expressions.map(walk);
+            return tag.apply(null, [strings].concat(values));
+        }
+        else if (node.type === 'TemplateElement') {
+            return node.value.cooked;
+        }
         else return FAIL;
     })(ast);
     
