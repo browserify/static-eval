@@ -51,3 +51,14 @@ test('array methods with vars', function(t) {
     var ast = parse(src).body[0].expression;
     t.deepEqual(evaluate(ast, {x: 2}), [2, 4, 6]);
 });
+
+test('evaluate this', function(t) {
+    t.plan(1);
+
+    var src = 'this.x + this.y.z';
+    var ast = parse(src).body[0].expression;
+    var res = evaluate(ast, {
+        'this': { x: 1, y: { z: 100 } }
+    });
+    t.equal(res, 101);
+});
