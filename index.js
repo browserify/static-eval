@@ -82,6 +82,7 @@ module.exports = function (ast, vars) {
         else if (node.type === 'CallExpression') {
             var callee = walk(node.callee);
             if (callee === FAIL) return FAIL;
+            if (typeof callee !== 'function') return FAIL;
             
             var ctx = node.callee.object ? walk(node.callee.object) : FAIL;
             if (ctx === FAIL) ctx = null;
