@@ -136,6 +136,19 @@ module.exports = function (ast, vars) {
         else if (node.type === 'TemplateElement') {
             return node.value.cooked;
         }
+        else if (node.type === 'NewExpression') {
+            var callee = walk(node.callee);
+            if (callee === FAIL) return FAIL;
+            if (typeof callee !== 'function') return FAIL;
+
+            var args = [];
+            for (var i = 0, l = node.arguments.length; i < l; i++) {
+                var x = walk(node.arguments[i]);
+                if (x === FAIL) return FAIL;
+                args.push(x);
+            }
+            return new callee(...args);
+        }
         else return FAIL;
     })(ast);
     

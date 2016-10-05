@@ -62,3 +62,15 @@ test('evaluate this', function(t) {
     });
     t.equal(res, 101);
 });
+
+test('evaluate new', function(t) {
+    t.plan(1);
+
+    var src = '(new Array(1, v))[1]';
+    var ast = parse(src).body[0].expression;
+    var res = evaluate(ast, {
+      Array: Array,
+      v: 100
+    });
+    t.equal(res, 100);
+});
