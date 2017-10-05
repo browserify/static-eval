@@ -4,7 +4,7 @@ module.exports = function (ast, vars) {
     if (!vars) vars = {};
     var FAIL = {};
     
-    var result = (function walk (node) {
+    var result = (function walk (node, scopeVars) {
         if (node.type === 'Literal') {
             return node.value;
         }
@@ -97,7 +97,10 @@ module.exports = function (ast, vars) {
         }
         else if (node.type === 'MemberExpression') {
             var obj = walk(node.object);
-            if (obj === FAIL) return FAIL;
+            // do not allow access to methods on Function 
+            if((obj === FAIL) || (typeof obj == 'function')){
+                return FAIL;
+            }
             if (node.property.type === 'Identifier') {
                 return obj[node.property.name];
             }
@@ -110,7 +113,37 @@ module.exports = function (ast, vars) {
             if (val === FAIL) return FAIL;
             return val ? walk(node.consequent) : walk(node.alternate)
         }
+        else if (node.type === 'ExpressionStatement') {
+            var val = walk(node.expression)
+            if (val === FAIL) return FAIL;
+            return val;
+        }
+        else if (node.type === 'ReturnStatement') {
+            return walk(node.argument)
+        }
         else if (node.type === 'FunctionExpression') {
+            
+            var bodies = node.body.body;
+            
+            // Create a "scope" for our arguments
+            var oldVars = {};
+            Object.keys(vars).forEach(function(element){
+                oldVars[element] = vars[element];
+            })
+
+            node.params.forEach(function(key) {
+                if(key.type == 'Identifier'){
+                  vars[key.name] = null;
+                }
+            });
+            for(var i in bodies){
+                if(walk(bodies[i]) === FAIL){
+                    return FAIL;
+                }
+            }
+            // restore the vars and scope after we walk
+            vars = oldVars;
+            
             var keys = Object.keys(vars);
             var vals = keys.map(function(key) {
                 return vars[key];
