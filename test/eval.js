@@ -62,3 +62,21 @@ test('evaluate this', function(t) {
     });
     t.equal(res, 101);
 });
+
+test('FunctionExpression unresolved', function(t) {
+    t.plan(1);
+
+    var src = '(function(){console.log("Not Good")})';
+    var ast = parse(src).body[0].expression;
+    var res = evaluate(ast, {});
+    t.equal(res, undefined);
+});
+
+test('MemberExpressions from Functions unresolved', function(t) {
+    t.plan(1);
+
+    var src = '(function () {}).constructor';
+    var ast = parse(src).body[0].expression;
+    var res = evaluate(ast, {});
+    t.equal(res, undefined);
+});
