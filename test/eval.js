@@ -3,7 +3,7 @@ var evaluate = require('../');
 var parse = require('esprima').parse;
 
 test('resolved', function (t) {
-    t.plan(1);
+    t.plan(2);
     
     var src = '[1,2,3+4*10+(n||6),foo(3+5),obj[""+"x"].y]';
     var ast = parse(src).body[0].expression;
@@ -12,11 +12,12 @@ test('resolved', function (t) {
         foo: function (x) { return x * 100 },
         obj: { x: { y: 555 } }
     });
+    t.ok(evaluate.success);
     t.deepEqual(res, [ 1, 2, 49, 800, 555 ]);
 });
 
 test('unresolved', function (t) {
-    t.plan(1);
+    t.plan(2);
     
     var src = '[1,2,3+4*10*z+n,foo(3+5),obj[""+"x"].y]';
     var ast = parse(src).body[0].expression;
@@ -25,6 +26,7 @@ test('unresolved', function (t) {
         foo: function (x) { return x * 100 },
         obj: { x: { y: 555 } }
     });
+    t.notOk(evaluate.success);
     t.equal(res, undefined);
 });
 
@@ -53,30 +55,33 @@ test('array methods with vars', function(t) {
 });
 
 test('evaluate this', function(t) {
-    t.plan(1);
+    t.plan(2);
 
     var src = 'this.x + this.y.z';
     var ast = parse(src).body[0].expression;
     var res = evaluate(ast, {
         'this': { x: 1, y: { z: 100 } }
     });
+    t.ok(evaluate.success);
     t.equal(res, 101);
 });
 
 test('FunctionExpression unresolved', function(t) {
-    t.plan(1);
+    t.plan(2);
 
     var src = '(function(){console.log("Not Good")})';
     var ast = parse(src).body[0].expression;
     var res = evaluate(ast, {});
+    t.notOk(evaluate.success);
     t.equal(res, undefined);
 });
 
 test('MemberExpressions from Functions unresolved', function(t) {
-    t.plan(1);
+    t.plan(2);
 
     var src = '(function () {}).constructor';
     var ast = parse(src).body[0].expression;
     var res = evaluate(ast, {});
+    t.notOk(evaluate.success);
     t.equal(res, undefined);
 });

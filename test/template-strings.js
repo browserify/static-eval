@@ -3,18 +3,19 @@ var evaluate = require('../');
 var parse = require('esprima').parse;
 
 test('untagged template strings', function (t) {
-    t.plan(1);
+    t.plan(2);
     
     var src = '`${1},${2 + n},${`4,5`}`';
     var ast = parse(src).body[0].expression;
     var res = evaluate(ast, {
         n: 6
     });
+    t.ok(evaluate.success);
     t.deepEqual(res, '1,8,4,5');
 });
 
 test('tagged template strings', function (t) {
-    t.plan(3);
+    t.plan(4);
 
     var src = 'template`${1},${2 + n},${`4,5`}`';
     var ast = parse(src).body[0].expression;
@@ -29,5 +30,6 @@ test('tagged template strings', function (t) {
         },
         n: 6
     });
+    t.ok(evaluate.success);
     t.deepEqual(res, 'foo');
 })
