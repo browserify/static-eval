@@ -135,6 +135,7 @@ module.exports = function (ast, vars) {
                 if(key.type == 'Identifier'){
                   vars[key.name] = null;
                 }
+                else return FAIL;
             });
             for(var i in bodies){
                 if(walk(bodies[i]) === FAIL){
