@@ -1,6 +1,6 @@
 var unparse = require('escodegen').generate;
 
-module.exports = function (ast, vars) {
+module.exports = function staticEval (ast, vars) {
     if (!vars) vars = {};
     var FAIL = {};
     
@@ -174,5 +174,6 @@ module.exports = function (ast, vars) {
         else return FAIL;
     })(ast);
     
+    staticEval.success = result !== FAIL
     return result === FAIL ? undefined : result;
 };

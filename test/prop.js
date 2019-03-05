@@ -3,7 +3,7 @@ var evaluate = require('../');
 var parse = require('esprima').parse;
 
 test('function property', function (t) {
-    t.plan(1);
+    t.plan(2);
     
     var src = '[1,2,3+4*10+n,beep.boop(3+5),obj[""+"x"].y]';
     var ast = parse(src).body[0].expression;
@@ -12,5 +12,6 @@ test('function property', function (t) {
         beep: { boop: function (x) { return x * 100 } },
         obj: { x: { y: 555 } }
     });
+    t.ok(evaluate.success);
     t.deepEqual(res, [ 1, 2, 49, 800, 555 ]);
 });

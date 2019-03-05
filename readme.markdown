@@ -72,7 +72,8 @@ tree object `ast` with an optional collection of variables `vars` to use in the
 static expression resolution.
 
 If the expression contained in `ast` can't be statically resolved, `evaluate()`
-returns undefined.
+returns undefined. You can also use the `evaluate.success` property to check if
+the most recent call succeeded.
 
 # install
 
