@@ -80,3 +80,29 @@ test('MemberExpressions from Functions unresolved', function(t) {
     var res = evaluate(ast, {});
     t.equal(res, undefined);
 });
+
+test('disallow accessing constructor or __proto__', function (t) {
+    t.plan(4)
+
+    var someValue = {};
+
+    var src = 'object.constructor';
+    var ast = parse(src).body[0].expression;
+    var res = evaluate(ast, { vars: { object: someValue } });
+    t.equal(res, undefined);
+
+    var src = 'object["constructor"]';
+    var ast = parse(src).body[0].expression;
+    var res = evaluate(ast, { vars: { object: someValue } });
+    t.equal(res, undefined);
+
+    var src = 'object.__proto__';
+    var ast = parse(src).body[0].expression;
+    var res = evaluate(ast, { vars: { object: someValue } });
+    t.equal(res, undefined);
+
+    var src = 'object["__pro"+"t\x6f__"]';
+    var ast = parse(src).body[0].expression;
+    var res = evaluate(ast, { vars: { object: someValue } });
+    t.equal(res, undefined);
+});
