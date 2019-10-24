@@ -106,3 +106,18 @@ test('disallow accessing constructor or __proto__', function (t) {
     var res = evaluate(ast, { vars: { object: someValue } });
     t.equal(res, undefined);
 });
+
+
+test('constructor at runtime only', function(t) {
+    t.plan(1)
+
+    var src = '(function myTag(y){return ""[!y?"__proto__":"constructor"][y]})("constructor")("console.log(process.env)")()'
+    var ast = parse(src).body[0].expression;
+    var res = evaluate(ast);
+    t.equal(res, undefined);
+
+    var src = '(function(prop) { return {}[prop ? "benign" : "constructor"][prop] })("constructor")("alert(1)")()'
+    var ast = parse(src).body[0].expression;
+    var res = evaluate(ast);
+    t.equal(res, undefined);
+});
