@@ -109,7 +109,7 @@ test('disallow accessing constructor or __proto__', function (t) {
 
 
 test('constructor at runtime only', function(t) {
-    t.plan(1)
+    t.plan(2)
 
     var src = '(function myTag(y){return ""[!y?"__proto__":"constructor"][y]})("constructor")("console.log(process.env)")()'
     var ast = parse(src).body[0].expression;
