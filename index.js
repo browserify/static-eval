@@ -101,11 +101,13 @@ module.exports = function (ast, vars) {
             if((obj === FAIL) || (typeof obj == 'function')){
                 return FAIL;
             }
-            if (node.property.type === 'Identifier') {
+            if (node.property.type === 'Identifier' && !node.computed) {
+                if (isUnsafeProperty(node.property.name)) return FAIL;
                 return obj[node.property.name];
             }
             var prop = walk(node.property);
-            if (prop === FAIL) return FAIL;
+            if (prop === null || prop === FAIL) return FAIL;
+            if (isUnsafeProperty(prop)) return FAIL;
             return obj[prop];
         }
         else if (node.type === 'ConditionalExpression') {
@@ -176,3 +178,7 @@ module.exports = function (ast, vars) {
     
     return result === FAIL ? undefined : result;
 };
+
+function isUnsafeProperty(name) {
+    return name === 'constructor' || name === '__proto__';
+}
