@@ -144,7 +144,7 @@ test('function declaration does not invoke CallExpressions', function(t) {
         noop: function(){},
         onInvoke: function() {invoked = true}
     };
-    var src = `noop(function(){ onInvoke(); })`;
+    var src = 'noop(function(){ onInvoke(); })';
     var ast = parse(src).body[0].expression;
     evaluate(ast, variables);
     t.equal(invoked, false);
