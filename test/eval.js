@@ -44,6 +44,37 @@ test('array methods', function(t) {
     t.deepEqual(evaluate(ast), [2, 4, 6]);
 });
 
+test('array methods invocation count', function(t) {
+    t.plan(2);
+
+    var variables = {
+        values: [1, 2, 3],
+        receiver: []
+    };
+    var src = 'values.forEach(function(x) { receiver.push(x); })'
+    var ast = parse(src).body[0].expression;
+    evaluate(ast, variables);
+    t.equal(variables.receiver.length, 3);
+    t.deepEqual(variables.receiver, [1, 2, 3]);
+})
+
+test('array methods invocation count debugging', function(t) {
+    t.plan(1);
+
+    var invoked = false;
+    var variables = {
+        values: [],
+        onValue: () => {
+            console.log("Invoke happened")
+            invoked = true
+        }
+    };
+    var src = 'values.forEach(function(x) { onValue() })'
+    var ast = parse(src).body[0].expression;
+    evaluate(ast, variables);
+    t.equal(invoked, false);
+})
+
 test('array methods with vars', function(t) {
     t.plan(1);
 
@@ -120,4 +151,18 @@ test('constructor at runtime only', function(t) {
     var ast = parse(src).body[0].expression;
     var res = evaluate(ast);
     t.equal(res, undefined);
+});
+
+test('function declaration does not invoke CallExpressions', function(t) {
+    t.plan(1);
+
+    var invoked = false;
+    var variables = {
+        noop: function(){},
+        onInvoke: function() {invoked = true}
+    };
+    var src = `noop(function(){ onInvoke(); })`;
+    var ast = parse(src).body[0].expression;
+    evaluate(ast, variables);
+    t.equal(invoked, false);
 });
