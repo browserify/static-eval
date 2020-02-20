@@ -121,3 +121,15 @@ test('constructor at runtime only', function(t) {
     var res = evaluate(ast);
     t.equal(res, undefined);
 });
+
+test('short circuit evaluation', function(t) {
+    t.plan(1);
+
+    var variables = {
+        value: null
+    };
+    var src = 'value && value.func()';
+    var ast = parse(src).body[0].expression;
+    var res = evaluate(ast, variables);
+    t.equals(res, null);
+})
