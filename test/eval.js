@@ -58,23 +58,6 @@ test('array methods invocation count', function(t) {
     t.deepEqual(variables.receiver, [1, 2, 3]);
 })
 
-test('array methods invocation count debugging', function(t) {
-    t.plan(1);
-
-    var invoked = false;
-    var variables = {
-        values: [],
-        onValue: () => {
-            console.log("Invoke happened")
-            invoked = true
-        }
-    };
-    var src = 'values.forEach(function(x) { onValue() })'
-    var ast = parse(src).body[0].expression;
-    evaluate(ast, variables);
-    t.equal(invoked, false);
-})
-
 test('array methods with vars', function(t) {
     t.plan(1);
 
