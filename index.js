@@ -50,6 +50,14 @@ module.exports = function (ast, vars) {
                 if (r === FAIL) return FAIL;
                 return r;
             }
+            else if (op === '||') {
+                var l = walk(node.left);
+                if (l === FAIL) return FAIL;
+                if (l) return l;
+                var r = walk(node.right);
+                if (r === FAIL) return FAIL;
+                return r;
+            }
 
             var l = walk(node.left);
             if (l === FAIL) return FAIL;
