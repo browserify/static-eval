@@ -25,9 +25,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/substack/static-eval.git"
+    "url": "git://github.com/browserify/static-eval.git"
   },
-  "homepage": "https://github.com/substack/static-eval",
+  "homepage": "https://github.com/browserify/static-eval",
   "keywords": [
     "static",
     "eval",
