@@ -136,6 +136,32 @@ test('constructor at runtime only', function(t) {
     t.equal(res, undefined);
 });
 
+test('short circuit evaluation AND', function(t) {
+    t.plan(1);
+
+    var variables = {
+        value: null
+    };
+    var src = 'value && value.func()';
+    var ast = parse(src).body[0].expression;
+    var res = evaluate(ast, variables);
+    t.equals(res, null);
+})
+
+test('short circuit evaluation OR', function(t) {
+    t.plan(1);
+
+    var fnInvoked = false;
+    var variables = {
+        value: true,
+        fn: function() { fnInvoked = true}
+    };
+    var src = 'value || fn()';
+    var ast = parse(src).body[0].expression;
+    evaluate(ast, variables);
+    t.equals(fnInvoked, false);
+})
+
 test('function declaration does not invoke CallExpressions', function(t) {
     t.plan(1);
 

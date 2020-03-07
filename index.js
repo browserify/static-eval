@@ -40,12 +40,30 @@ module.exports = function (ast, vars) {
         }
         else if (node.type === 'BinaryExpression' ||
                  node.type === 'LogicalExpression') {
+            var op = node.operator;
+
+            if (op === '&&') {
+                var l = walk(node.left);
+                if (l === FAIL) return FAIL;
+                if (!l) return l;
+                var r = walk(node.right);
+                if (r === FAIL) return FAIL;
+                return r;
+            }
+            else if (op === '||') {
+                var l = walk(node.left);
+                if (l === FAIL) return FAIL;
+                if (l) return l;
+                var r = walk(node.right);
+                if (r === FAIL) return FAIL;
+                return r;
+            }
+
             var l = walk(node.left, noExecute);
             if (l === FAIL) return FAIL;
             var r = walk(node.right, noExecute);
             if (r === FAIL) return FAIL;
             
-            var op = node.operator;
             if (op === '==') return l == r;
             if (op === '===') return l === r;
             if (op === '!=') return l != r;
@@ -62,8 +80,6 @@ module.exports = function (ast, vars) {
             if (op === '|') return l | r;
             if (op === '&') return l & r;
             if (op === '^') return l ^ r;
-            if (op === '&&') return l && r;
-            if (op === '||') return l || r;
             
             return FAIL;
         }
