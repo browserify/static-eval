@@ -80,7 +80,6 @@ module.exports = function (ast, vars) {
             if (op === '|') return l | r;
             if (op === '&') return l & r;
             if (op === '^') return l ^ r;
-            if (op === '||') return l || r;
             
             return FAIL;
         }
