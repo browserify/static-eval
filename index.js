@@ -1,6 +1,9 @@
 var unparse = require('escodegen').generate;
 
-module.exports = function (ast, vars) {
+module.exports = function (ast, vars, opts) {
+    if(!opts) opts = {};
+    var rejectAccessToMethodsOnFunctions = !opts.allowAccessToMethodsOnFunctions;
+
     if (!vars) vars = {};
     var FAIL = {};
 
@@ -119,8 +122,9 @@ module.exports = function (ast, vars) {
         }
         else if (node.type === 'MemberExpression') {
             var obj = walk(node.object, noExecute);
-            // do not allow access to methods on Function
-            if((obj === FAIL) || (typeof obj == 'function')){
+            if((obj === FAIL) || (
+                (typeof obj == 'function') && rejectAccessToMethodsOnFunctions
+            )){
                 return FAIL;
             }
             if (node.property.type === 'Identifier' && !node.computed) {
