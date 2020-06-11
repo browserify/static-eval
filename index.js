@@ -3,7 +3,7 @@ var unparse = require('escodegen').generate;
 module.exports = function (ast, vars) {
     if (!vars) vars = {};
     var FAIL = {};
-    
+
     var result = (function walk (node, noExecute) {
         if (node.type === 'Literal') {
             return node.value;
@@ -63,7 +63,7 @@ module.exports = function (ast, vars) {
             if (l === FAIL) return FAIL;
             var r = walk(node.right, noExecute);
             if (r === FAIL) return FAIL;
-            
+
             if (op === '==') return l == r;
             if (op === '===') return l === r;
             if (op === '!=') return l != r;
@@ -80,7 +80,7 @@ module.exports = function (ast, vars) {
             if (op === '|') return l | r;
             if (op === '&') return l & r;
             if (op === '^') return l ^ r;
-            
+
             return FAIL;
         }
         else if (node.type === 'Identifier') {
@@ -100,7 +100,7 @@ module.exports = function (ast, vars) {
             if (callee === FAIL) return FAIL;
             if (typeof callee !== 'function') return FAIL;
 
-            
+
             var ctx = node.callee.object ? walk(node.callee.object, noExecute) : FAIL;
             if (ctx === FAIL) ctx = null;
 
@@ -119,7 +119,7 @@ module.exports = function (ast, vars) {
         }
         else if (node.type === 'MemberExpression') {
             var obj = walk(node.object, noExecute);
-            // do not allow access to methods on Function 
+            // do not allow access to methods on Function
             if((obj === FAIL) || (typeof obj == 'function')){
                 return FAIL;
             }
@@ -147,7 +147,7 @@ module.exports = function (ast, vars) {
         }
         else if (node.type === 'FunctionExpression') {
             var bodies = node.body.body;
-            
+
             // Create a "scope" for our arguments
             var oldVars = {};
             Object.keys(vars).forEach(function(element){
@@ -168,7 +168,7 @@ module.exports = function (ast, vars) {
             }
             // restore the vars and scope after we walk
             vars = oldVars;
-            
+
             var keys = Object.keys(vars);
             var vals = keys.map(function(key) {
                 return vars[key];
@@ -196,7 +196,7 @@ module.exports = function (ast, vars) {
         }
         else return FAIL;
     })(ast);
-    
+
     return result === FAIL ? undefined : result;
 };
 
