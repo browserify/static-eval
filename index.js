@@ -1,5 +1,8 @@
 var unparse = require('escodegen').generate;
 
+// flag of function argument
+var FUNCTION_ARGUMENT_FLAG = 'FUNCTION_ARGUMENT_FLAG';
+
 module.exports = function (ast, vars, opts) {
     if(!opts) opts = {};
     var rejectAccessToMethodsOnFunctions = !opts.allowAccessToMethodsOnFunctions;
@@ -129,6 +132,10 @@ module.exports = function (ast, vars, opts) {
             }
             if (node.property.type === 'Identifier' && !node.computed) {
                 if (isUnsafeProperty(node.property.name)) return FAIL;
+                // don't execute when object or property are argument
+                if(noExecute && (obj === FUNCTION_ARGUMENT_FLAG || node.property.name === FUNCTION_ARGUMENT_FLAG)){
+                    return FUNCTION_ARGUMENT_FLAG
+                }
                 return obj[node.property.name];
             }
             var prop = walk(node.property, noExecute);
@@ -161,7 +168,7 @@ module.exports = function (ast, vars, opts) {
             for(var i=0; i<node.params.length; i++){
                 var key = node.params[i];
                 if(key.type == 'Identifier'){
-                  vars[key.name] = null;
+                  vars[key.name] = FUNCTION_ARGUMENT_FLAG;
                 }
                 else return FAIL;
             }
