@@ -14,7 +14,7 @@
     }
   ],
   "dependencies": {
-    "escodegen": "^1.11.1"
+    "escodegen": "^2.1.0"
   },
   "devDependencies": {
     "esprima": "^3.1.3",
