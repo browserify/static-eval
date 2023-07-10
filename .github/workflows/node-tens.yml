@@ -8,7 +8,7 @@ jobs:
     with:
       range: '>= 10'
       type: minors
-      command: npm run tests-only
+      command: npm run test
 
   node:
     name: 'node >= 10'
