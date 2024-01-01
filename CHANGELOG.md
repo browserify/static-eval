@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.1.1
+* Update `escodegen`. [@FabianWarnecke](https://github.com/FabianWarnecke) in [#43](https://github.com/browserify/static-eval/pull/43)
+
+  escodegen doesn't officially support all the Node.js versions that `static-eval` supports, but so far it still works on them.
+  This has been the case for both v1.x and v2.1.0 of escodegen, so the upgrade doesn't change that situation.
+
 ## 2.1.0
 * Add `allowAccessToMethodsOnFunctions` option to restore 1.x behaviour so that [cwise](https://github.com/scijs/cwise) can upgrade. ([@archmoj](https://github.com/archmoj) in [#31](https://github.com/browserify/static-eval/pull/31))
 

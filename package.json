@@ -1,7 +1,7 @@
 {
   "name": "static-eval",
   "description": "evaluate statically-analyzable expressions",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "author": {
     "name": "James Halliday",
     "email": "mail@substack.net",
