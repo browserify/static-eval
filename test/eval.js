@@ -130,7 +130,7 @@ test('constructor at runtime only', function(t) {
     var res = evaluate(ast);
     t.equal(res, undefined);
 
-    var src = '(function(prop) { return {}[prop ? "benign" : "constructor"][prop] })("constructor")("alert(1)")()'
+    var src = '(function(prop) { return {}[prop !== "constructor" ? "benign" : "constructor"] })("constructor")("alert(1)")()'
     var ast = parse(src).body[0].expression;
     var res = evaluate(ast);
     t.equal(res, undefined);
@@ -175,3 +175,17 @@ test('function declaration does not invoke CallExpressions', function(t) {
     evaluate(ast, variables);
     t.equal(invoked, false);
 });
+
+test('MemberExpressions of function argument', function(t) {
+    t.plan(2);
+
+    var variables = {
+        values: [{a:{b:1}}, {a:{b:2}}, {a:{b:3}}],
+        receiver: []
+    };
+    var src = 'values.forEach(function(x) { receiver.push(x.a.b); })'
+    var ast = parse(src).body[0].expression;
+    evaluate(ast, variables);
+    t.equal(variables.receiver.length, 3);
+    t.deepEqual(variables.receiver, [1, 2, 3]);
+})
