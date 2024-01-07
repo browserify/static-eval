@@ -149,8 +149,8 @@ module.exports = function (ast, vars, opts) {
         else if (node.type === 'ReturnStatement') {
             return walk(node.argument, noExecute)
         }
-        else if (node.type === 'FunctionExpression') {
-            var bodies = node.body.body;
+        else if (node.type === 'FunctionExpression' || node.type === 'ArrowFunctionExpression') {
+            var bodies = node.body.body || [node.body];
 
             // Create a "scope" for our arguments
             var oldVars = {};

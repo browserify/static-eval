@@ -44,6 +44,14 @@ test('array methods', function(t) {
     t.deepEqual(evaluate(ast), [2, 4, 6]);
 });
 
+test('array methods with arrow function', function(t) {
+    t.plan(1);
+
+    var src = '[1, 2, 3].map(n => n * 2 )';
+    var ast = parse(src).body[0].expression;
+    t.deepEqual(evaluate(ast), [2, 4, 6]);
+});
+
 test('array methods invocation count', function(t) {
     t.plan(2);
 
